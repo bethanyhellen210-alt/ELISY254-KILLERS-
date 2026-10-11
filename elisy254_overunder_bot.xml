@@ -48,7 +48,7 @@
       <block type="notify" id="start_notify">
         <field name="NOTIFICATION_TYPE">info</field>
         <field name="NOTIFICATION_SOUND">announcement</field>
-        <value name="MESSAGE"><block type="text" id="start_txt"><field name="TEXT">Elisy254 2026 OVER/UNDER BOT - System Activated!</field></block></value>
+        <value name="MESSAGE"><block type="text" id="start_txt"><field name="TEXT">ELISY254 START</field></block></value>
         <next>
           <block type="variables_set" id="init_stake">
             <field name="VAR" id="Stake">Stake</field>
@@ -173,7 +173,7 @@
                   <block type="notify" id="n_tp">
                     <field name="NOTIFICATION_TYPE">success</field>
                     <field name="NOTIFICATION_SOUND">job-done</field>
-                    <value name="MESSAGE"><block type="text" id="t_tp"><field name="TEXT">Elisy254 2026 TARGET PROFIT HIT!</field></block></value>
+                    <value name="MESSAGE"><block type="text" id="t_tp"><field name="TEXT">ELISY254 TARGET HIT! UPDATE CODES</field></block></value>
                   </block>
                 </statement>
                 <value name="IF1">
