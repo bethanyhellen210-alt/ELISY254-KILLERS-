@@ -1,36 +1,36 @@
 <xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
   <variables>
-    <variable type="" id="Stake">Stake</variable>
-    <variable type="" id="InitialStake">Initial Stake</variable>
-    <variable type="" id="Martingale">Martingale Multiplier</variable>
-    <variable type="" id="TargetProfit">Target Profit</variable>
-    <variable type="" id="StopLoss">Stop Loss</variable>
-    <variable type="" id="TotalProfit">Total Profit</variable>
-    <variable type="" id="TargetDigit">Target Digit Barrier</variable>
+    <variable type="" id="Stake_Var">Stake</variable>
+    <variable type="" id="InitialStake_Var">Initial Stake</variable>
+    <variable type="" id="Martingale_Var">Martingale Multiplier</variable>
+    <variable type="" id="TargetProfit_Var">Target Profit</variable>
+    <variable type="" id="StopLoss_Var">Stop Loss</variable>
+    <variable type="" id="TotalProfit_Var">Total Profit</variable>
+    <variable type="" id="Prediction_Var">Predicted Digit</variable>
   </variables>
 
-  <!-- BLOCK 1: TRADE DEFINITION & ELISY254 BRANDING -->
-  <block type="trade_definition" id="trade_def" x="0" y="0">
+  <!-- BLOCK 1: MAIN TRADE DEFINITION -->
+  <block type="trade_definition" id="main_trade_def" x="0" y="0">
     <statement name="TRADE_OPTIONS">
-      <block type="trade_definition_market" id="market_def">
+      <block type="trade_definition_market" id="market_config">
         <field name="MARKET_LIST">synthetic_index</field>
         <field name="SUBMARKET_LIST">random_index</field>
         <field name="SYMBOL_LIST">1HZ10V</field>
         <next>
-          <block type="trade_definition_tradetype" id="tradetype_def">
+          <block type="trade_definition_tradetype" id="type_config">
             <field name="TRADETYPECAT_LIST">digits</field>
             <field name="TRADETYPE_LIST">matchesdiffers</field>
             <next>
-              <block type="trade_definition_contracttype" id="contracttype_def">
+              <block type="trade_definition_contracttype" id="contract_config">
                 <field name="TYPE_LIST">DIGITMATCH</field>
                 <next>
-                  <block type="trade_definition_candleinterval" id="interval_def">
+                  <block type="trade_definition_candleinterval" id="candle_config">
                     <field name="CANDLEINTERVAL_LIST">60</field>
                     <next>
-                      <block type="trade_definition_restartbuystat" id="restart_def">
+                      <block type="trade_definition_restartbuystat" id="restart_config">
                         <field name="TIME_MACHINE_ENABLED">FALSE</field>
                         <next>
-                          <block type="trade_definition_restartonerror" id="onerror_def">
+                          <block type="trade_definition_restartonerror" id="error_config">
                             <field name="RESTARTONERROR">TRUE</field>
                           </block>
                         </next>
@@ -45,56 +45,63 @@
       </block>
     </statement>
     <statement name="INITIALIZATION">
-      <block type="notify" id="start_notify">
+      <!-- Welcome Sound & Start Notification -->
+      <block type="notify" id="start_announcement">
         <field name="NOTIFICATION_TYPE">info</field>
         <field name="NOTIFICATION_SOUND">announcement</field>
         <value name="MESSAGE">
           <block type="text" id="start_txt">
-            <field name="TEXT">Elisy254 2026 MATCHES BOT - System Activated!</field>
+            <field name="TEXT">Elisy254 2026 MATCHES AUTO-PREDICT BOT START!</field>
           </block>
         </value>
         <next>
-          <block type="variables_set" id="init_stake">
-            <field name="VAR" id="Stake">Stake</field>
+          <!-- Set Starting Stake -->
+          <block type="variables_set" id="set_stk">
+            <field name="VAR" id="Stake_Var">Stake</field>
             <value name="VALUE">
-              <block type="math_number" id="num_stake"><field name="NUM">1</field></block>
+              <block type="math_number" id="num_stk"><field name="NUM">1</field></block>
             </value>
             <next>
-              <block type="variables_set" id="init_initial">
-                <field name="VAR" id="InitialStake">Initial Stake</field>
+              <!-- Set Initial Stake for Reset -->
+              <block type="variables_set" id="set_init_stk">
+                <field name="VAR" id="InitialStake_Var">Initial Stake</field>
                 <value name="VALUE">
-                  <block type="math_number" id="num_init"><field name="NUM">1</field></block>
+                  <block type="math_number" id="num_init_stk"><field name="NUM">1</field></block>
                 </value>
                 <next>
-                  <!-- 1.15x Smart Recovery for Matches 8x Payout -->
-                  <block type="variables_set" id="init_martingale">
-                    <field name="VAR" id="Martingale">Martingale Multiplier</field>
+                  <!-- Set Martingale Multiplier (1.15x recommended for Matches 8x payout) -->
+                  <block type="variables_set" id="set_mart">
+                    <field name="VAR" id="Martingale_Var">Martingale Multiplier</field>
                     <value name="VALUE">
                       <block type="math_number" id="num_mart"><field name="NUM">1.15</field></block>
                     </value>
                     <next>
-                      <block type="variables_set" id="init_target_digit">
-                        <field name="VAR" id="TargetDigit">Target Digit Barrier</field>
+                      <!-- Set Target Profit -->
+                      <block type="variables_set" id="set_tp">
+                        <field name="VAR" id="TargetProfit_Var">Target Profit</field>
                         <value name="VALUE">
-                          <block type="math_number" id="num_digit"><field name="NUM">5</field></block>
+                          <block type="math_number" id="num_tp"><field name="NUM">10</field></block>
                         </value>
                         <next>
-                          <block type="variables_set" id="init_tp">
-                            <field name="VAR" id="TargetProfit">Target Profit</field>
+                          <!-- Set Stop Loss -->
+                          <block type="variables_set" id="set_sl">
+                            <field name="VAR" id="StopLoss_Var">Stop Loss</field>
                             <value name="VALUE">
-                              <block type="math_number" id="num_tp"><field name="NUM">10</field></block>
+                              <block type="math_number" id="num_sl"><field name="NUM">50</field></block>
                             </value>
                             <next>
-                              <block type="variables_set" id="init_sl">
-                                <field name="VAR" id="StopLoss">Stop Loss</field>
+                              <!-- Initialize Total Profit -->
+                              <block type="variables_set" id="set_tot_profit">
+                                <field name="VAR" id="TotalProfit_Var">Total Profit</field>
                                 <value name="VALUE">
-                                  <block type="math_number" id="num_sl"><field name="NUM">50</field></block>
+                                  <block type="math_number" id="num_tot_p"><field name="NUM">0</field></block>
                                 </value>
                                 <next>
-                                  <block type="variables_set" id="init_profit">
-                                    <field name="VAR" id="TotalProfit">Total Profit</field>
+                                  <!-- Initialize Predicted Digit -->
+                                  <block type="variables_set" id="set_pred_init">
+                                    <field name="VAR" id="Prediction_Var">Predicted Digit</field>
                                     <value name="VALUE">
-                                      <block type="math_number" id="num_total"><field name="NUM">0</field></block>
+                                      <block type="last_digit" id="init_last_d"></block>
                                     </value>
                                   </block>
                                 </next>
@@ -113,120 +120,241 @@
       </block>
     </statement>
     <statement name="SUBMARKET">
-      <block type="trade_definition_tradeoptions" id="options_def">
+      <block type="trade_definition_tradeoptions" id="trade_opts">
         <mutation has_first_barrier="true" has_second_barrier="false"></mutation>
         <field name="DURATIONTYPE_LIST">t</field>
         <value name="DURATION">
-          <block type="math_number" id="dur_num"><field name="NUM">1</field></block>
+          <block type="math_number" id="dur_val"><field name="NUM">1</field></block>
         </value>
         <value name="AMOUNT">
-          <block type="variables_get" id="get_stk"><field name="VAR" id="Stake">Stake</field></block>
+          <block type="variables_get" id="get_current_stake">
+            <field name="VAR" id="Stake_Var">Stake</field>
+          </block>
         </value>
         <value name="BARRIER">
-          <block type="variables_get" id="get_bar"><field name="VAR" id="TargetDigit">Target Digit Barrier</field></block>
+          <block type="variables_get" id="get_pred_barrier">
+            <field name="VAR" id="Prediction_Var">Predicted Digit</field>
+          </block>
         </value>
       </block>
     </statement>
   </block>
 
-  <!-- BLOCK 2: PURCHASE ENTRY -->
-  <block type="before_purchase" id="before_purchase_def" x="520" y="0">
+  <!-- BLOCK 2: BEFORE PURCHASE & SELF-PREDICTION LOGIC -->
+  <block type="before_purchase" id="before_purchase_def" x="550" y="0">
     <statement name="BEFOREPURCHASE_STACK">
-      <block type="purchase" id="buy_match">
-        <field name="PURCHASE_LIST">DIGITMATCH</field>
+      <!-- AUTO-PREDICTION ENGINE: Analyzes incoming last digit dynamically -->
+      <block type="variables_set" id="update_prediction">
+        <field name="VAR" id="Prediction_Var">Predicted Digit</field>
+        <value name="VALUE">
+          <block type="last_digit" id="read_live_digit"></block>
+        </value>
+        <next>
+          <block type="purchase" id="buy_matches_contract">
+            <field name="PURCHASE_LIST">DIGITMATCH</field>
+          </block>
+        </next>
       </block>
     </statement>
   </block>
 
-  <!-- BLOCK 3: AFTER PURCHASE & LOSS RECOVERY -->
-  <block type="after_purchase" id="after_purchase_def" x="520" y="200">
+  <!-- BLOCK 3: AFTER PURCHASE (PROFIT TRACKING, SOUNDS, MARTINGALE & LIMITS) -->
+  <block type="after_purchase" id="after_purchase_def" x="550" y="220">
     <statement name="AFTERPURCHASE_STACK">
-      <block type="variables_set" id="update_profit">
-        <field name="VAR" id="TotalProfit">Total Profit</field>
+      <!-- Update Total Profit -->
+      <block type="variables_set" id="calc_profit">
+        <field name="VAR" id="TotalProfit_Var">Total Profit</field>
         <value name="VALUE">
-          <block type="math_arithmetic" id="add_p">
+          <block type="math_arithmetic" id="add_p_calc">
             <field name="OP">ADD</field>
-            <value name="A"><block type="variables_get" id="g_tp"><field name="VAR" id="TotalProfit">Total Profit</field></block></value>
-            <value name="B"><block type="read_details" id="r_pay"><field name="DETAIL_INDEX">4</field></block></value>
+            <value name="A">
+              <block type="variables_get" id="get_tot_p_val">
+                <field name="VAR" id="TotalProfit_Var">Total Profit</field>
+              </block>
+            </value>
+            <value name="B">
+              <block type="read_details" id="read_payout_amount">
+                <field name="DETAIL_INDEX">4</field>
+              </block>
+            </value>
           </block>
         </value>
         <next>
-          <block type="controls_if" id="check_res">
+          <block type="controls_if" id="check_trade_outcome">
             <mutation else="1"></mutation>
             <value name="IF0">
-              <block type="contract_check_result" id="c_win"><field name="CHECK_RESULT">win</field></block>
+              <block type="contract_check_result" id="check_win_result">
+                <field name="CHECK_RESULT">win</field>
+              </block>
             </value>
+
+            <!-- ON WIN: PLAY WIN SOUND & RESET STAKE -->
             <statement name="DO0">
-              <block type="notify" id="n_win">
+              <block type="notify" id="win_notification">
                 <field name="NOTIFICATION_TYPE">success</field>
                 <field name="NOTIFICATION_SOUND">earned-money</field>
                 <value name="MESSAGE">
-                  <block type="text" id="t_win"><field name="TEXT">Elisy254 MATCHES WIN! Resetting stake.</field></block>
-                </value>
-                <next>
-                  <block type="variables_set" id="r_stk">
-                    <field name="VAR" id="Stake">Stake</field>
-                    <value name="VALUE"><block type="variables_get" id="g_init"><field name="VAR" id="InitialStake">Initial Stake</field></block></value>
+                  <block type="text_join" id="win_msg_build">
+                    <mutation items="2"></mutation>
+                    <value name="ADD0">
+                      <block type="text" id="win_txt_label">
+                        <field name="TEXT">Elisy254 MATCHES WIN! Resetting Stake. Profit: $</field>
+                      </block>
+                    </value>
+                    <value name="ADD1">
+                      <block type="read_details" id="read_win_detail">
+                        <field name="DETAIL_INDEX">4</field>
+                      </block>
+                    </value>
                   </block>
-                </next>
-              </block>
-            </statement>
-            <statement name="ELSE">
-              <block type="notify" id="n_loss">
-                <field name="NOTIFICATION_TYPE">error</field>
-                <field name="NOTIFICATION_SOUND">severe-error</field>
-                <value name="MESSAGE">
-                  <block type="text" id="t_loss"><field name="TEXT">Elisy254 LOSS! Smart 1.15x Recovery applied.</field></block>
                 </value>
                 <next>
-                  <block type="variables_set" id="m_stk">
-                    <field name="VAR" id="Stake">Stake</field>
+                  <block type="variables_set" id="reset_stake_win">
+                    <field name="VAR" id="Stake_Var">Stake</field>
                     <value name="VALUE">
-                      <block type="math_arithmetic" id="mult_stk">
-                        <field name="OP">MULTIPLY</field>
-                        <value name="A"><block type="variables_get" id="g_curr"><field name="VAR" id="Stake">Stake</field></block></value>
-                        <value name="B"><block type="variables_get" id="g_mart"><field name="VAR" id="Martingale">Martingale Multiplier</field></block></value>
+                      <block type="variables_get" id="get_initial_stk_val">
+                        <field name="VAR" id="InitialStake_Var">Initial Stake</field>
                       </block>
                     </value>
                   </block>
                 </next>
               </block>
             </statement>
+
+            <!-- ON LOSS: PLAY LOSS SOUND & APPLY MULTIPLIER -->
+            <statement name="ELSE">
+              <block type="notify" id="loss_notification">
+                <field name="NOTIFICATION_TYPE">error</field>
+                <field name="NOTIFICATION_SOUND">severe-error</field>
+                <value name="MESSAGE">
+                  <block type="text_join" id="loss_msg_build">
+                    <mutation items="2"></mutation>
+                    <value name="ADD0">
+                      <block type="text" id="loss_txt_label">
+                        <field name="TEXT">Elisy254 LOSS! Recovering with Martingale...</field>
+                      </block>
+                    </value>
+                    <value name="ADD1">
+                      <block type="read_details" id="read_loss_detail">
+                        <field name="DETAIL_INDEX">4</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="variables_set" id="apply_recovery_stake">
+                    <field name="VAR" id="Stake_Var">Stake</field>
+                    <value name="VALUE">
+                      <block type="math_arithmetic" id="mult_stake_calc">
+                        <field name="OP">MULTIPLY</field>
+                        <value name="A">
+                          <block type="variables_get" id="get_curr_stk_val">
+                            <field name="VAR" id="Stake_Var">Stake</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="variables_get" id="get_mart_val">
+                            <field name="VAR" id="Martingale_Var">Martingale Multiplier</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </statement>
+
             <next>
-              <!-- LIMIT CHECKS -->
-              <block type="controls_if" id="chk_limits">
+              <!-- TARGET PROFIT AND STOP LOSS CHECKS -->
+              <block type="controls_if" id="check_tp_and_sl">
                 <mutation elseif="1" else="1"></mutation>
+
+                <!-- CHECK TARGET PROFIT -->
                 <value name="IF0">
-                  <block type="logic_compare" id="c_tp">
+                  <block type="logic_compare" id="cmp_tp_check">
                     <field name="OP">GTE</field>
-                    <value name="A"><block type="variables_get" id="g_tot_p"><field name="VAR" id="TotalProfit">Total Profit</field></block></value>
-                    <value name="B"><block type="variables_get" id="g_tar_p"><field name="VAR" id="TargetProfit">Target Profit</field></block></value>
+                    <value name="A">
+                      <block type="variables_get" id="get_tot_p_cmp">
+                        <field name="VAR" id="TotalProfit_Var">Total Profit</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="variables_get" id="get_tp_cmp">
+                        <field name="VAR" id="TargetProfit_Var">Target Profit</field>
+                      </block>
+                    </value>
                   </block>
                 </value>
                 <statement name="DO0">
-                  <block type="notify" id="n_tp">
+                  <block type="notify" id="tp_reached_notification">
                     <field name="NOTIFICATION_TYPE">success</field>
                     <field name="NOTIFICATION_SOUND">job-done</field>
-                    <value name="MESSAGE"><block type="text" id="t_tp_done"><field name="TEXT">Elisy254 2026 MATCHES TARGET PROFIT HIT!</field></block></value>
+                    <value name="MESSAGE">
+                      <block type="text_join" id="tp_done_msg">
+                        <mutation items="2"></mutation>
+                        <value name="ADD0">
+                          <block type="text" id="tp_done_label">
+                            <field name="TEXT">Elisy254 2026 MATCHES TARGET PROFIT HIT! Total Profit: $</field>
+                          </block>
+                        </value>
+                        <value name="ADD1">
+                          <block type="variables_get" id="get_final_p_val">
+                            <field name="VAR" id="TotalProfit_Var">Total Profit</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
                   </block>
                 </statement>
+
+                <!-- CHECK STOP LOSS -->
                 <value name="IF1">
-                  <block type="logic_compare" id="c_sl">
+                  <block type="logic_compare" id="cmp_sl_check">
                     <field name="OP">LTE</field>
-                    <value name="A"><block type="variables_get" id="g_tot_sl"><field name="VAR" id="TotalProfit">Total Profit</field></block></value>
-                    <value name="B"><block type="math_single" id="n_sl_val"><field name="OP">NEG</field><value name="NUM"><block type="variables_get" id="g_sl_p"><field name="VAR" id="StopLoss">Stop Loss</field></block></value></block></value>
+                    <value name="A">
+                      <block type="variables_get" id="get_tot_sl_cmp">
+                        <field name="VAR" id="TotalProfit_Var">Total Profit</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="math_single" id="negate_sl">
+                        <field name="OP">NEG</field>
+                        <value name="NUM">
+                          <block type="variables_get" id="get_sl_cmp">
+                            <field name="VAR" id="StopLoss_Var">Stop Loss</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
                   </block>
                 </value>
                 <statement name="DO1">
-                  <block type="notify" id="n_sl">
+                  <block type="notify" id="sl_reached_notification">
                     <field name="NOTIFICATION_TYPE">error</field>
                     <field name="NOTIFICATION_SOUND">severe-error</field>
-                    <value name="MESSAGE"><block type="text" id="t_sl_done"><field name="TEXT">Elisy254 2026 STOP LOSS HIT!</field></block></value>
+                    <value name="MESSAGE">
+                      <block type="text_join" id="sl_done_msg">
+                        <mutation items="2"></mutation>
+                        <value name="ADD0">
+                          <block type="text" id="sl_done_label">
+                            <field name="TEXT">Elisy254 2026 STOP LOSS HIT! Total Loss: $</field>
+                          </block>
+                        </value>
+                        <value name="ADD1">
+                          <block type="variables_get" id="get_final_sl_val">
+                            <field name="VAR" id="TotalProfit_Var">Total Profit</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
                   </block>
                 </statement>
+
+                <!-- CONTINUE TRADING -->
                 <statement name="ELSE">
-                  <block type="trade_again" id="trd_ag1"></block>
+                  <block type="trade_again" id="action_trade_again"></block>
                 </statement>
+
               </block>
             </next>
           </block>
