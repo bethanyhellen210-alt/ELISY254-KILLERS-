@@ -6,7 +6,6 @@
     <variable type="" id="TargetProfit">Target Profit</variable>
     <variable type="" id="StopLoss">Stop Loss</variable>
     <variable type="" id="TotalProfit">Total Profit</variable>
-    <variable type="" id="BarrierDigit">Barrier Digit</variable>
   </variables>
 
   <block type="trade_definition" id="trade_def" x="0" y="0">
@@ -14,14 +13,14 @@
       <block type="trade_definition_market" id="market_def">
         <field name="MARKET_LIST">synthetic_index</field>
         <field name="SUBMARKET_LIST">random_index</field>
-        <field name="SYMBOL_LIST">1HZ100V</field>
+        <field name="SYMBOL_LIST">R_100</field>
         <next>
           <block type="trade_definition_tradetype" id="tradetype_def">
             <field name="TRADETYPECAT_LIST">digits</field>
-            <field name="TRADETYPE_LIST">overunder</field>
+            <field name="TRADETYPE_LIST">evenodd</field>
             <next>
               <block type="trade_definition_contracttype" id="contracttype_def">
-                <field name="TYPE_LIST">DIGITOVER</field>
+                <field name="TYPE_LIST">both</field>
                 <next>
                   <block type="trade_definition_candleinterval" id="interval_def">
                     <field name="CANDLEINTERVAL_LIST">60</field>
@@ -50,7 +49,7 @@
         <field name="NOTIFICATION_SOUND">announcement</field>
         <value name="MESSAGE">
           <block type="text" id="start_txt">
-            <field name="TEXT">Elisy254 2026 OVER BOT - System Activated!</field>
+            <field name="TEXT">Elisy254 2026 EVEN/ODD BOT - System Activated!</field>
           </block>
         </value>
         <next>
@@ -78,39 +77,29 @@
                       </block>
                     </value>
                     <next>
-                      <block type="variables_set" id="init_barrier">
-                        <field name="VAR" id="BarrierDigit">Barrier Digit</field>
+                      <block type="variables_set" id="init_tp">
+                        <field name="VAR" id="TargetProfit">Target Profit</field>
                         <value name="VALUE">
-                          <block type="math_number" id="n_b">
-                            <field name="NUM">4</field>
+                          <block type="math_number" id="n_tp">
+                            <field name="NUM">10</field>
                           </block>
                         </value>
                         <next>
-                          <block type="variables_set" id="init_tp">
-                            <field name="VAR" id="TargetProfit">Target Profit</field>
+                          <block type="variables_set" id="init_sl">
+                            <field name="VAR" id="StopLoss">Stop Loss</field>
                             <value name="VALUE">
-                              <block type="math_number" id="n_tp">
-                                <field name="NUM">10</field>
+                              <block type="math_number" id="n_sl">
+                                <field name="NUM">50</field>
                               </block>
                             </value>
                             <next>
-                              <block type="variables_set" id="init_sl">
-                                <field name="VAR" id="StopLoss">Stop Loss</field>
+                              <block type="variables_set" id="init_tot">
+                                <field name="VAR" id="TotalProfit">Total Profit</field>
                                 <value name="VALUE">
-                                  <block type="math_number" id="n_sl_init">
-                                    <field name="NUM">50</field>
+                                  <block type="math_number" id="n_tot">
+                                    <field name="NUM">0</field>
                                   </block>
                                 </value>
-                                <next>
-                                  <block type="variables_set" id="init_tot">
-                                    <field name="VAR" id="TotalProfit">Total Profit</field>
-                                    <value name="VALUE">
-                                      <block type="math_number" id="n_tot">
-                                        <field name="NUM">0</field>
-                                      </block>
-                                    </value>
-                                  </block>
-                                </next>
                               </block>
                             </next>
                           </block>
@@ -128,7 +117,7 @@
 
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="options_def">
-        <mutation has_first_barrier="true" has_second_barrier="false"></mutation>
+        <mutation has_first_barrier="false" has_second_barrier="false"></mutation>
         <field name="DURATIONTYPE_LIST">t</field>
         <value name="DURATION">
           <block type="math_number" id="dur_num">
@@ -140,19 +129,33 @@
             <field name="VAR" id="Stake">Stake</field>
           </block>
         </value>
-        <value name="BARRIER">
-          <block type="variables_get" id="get_bar">
-            <field name="VAR" id="BarrierDigit">Barrier Digit</field>
-          </block>
-        </value>
       </block>
     </statement>
   </block>
 
   <block type="before_purchase" id="before_purchase_def" x="520" y="0">
     <statement name="BEFOREPURCHASE_STACK">
-      <block type="purchase" id="buy_over">
-        <field name="PURCHASE_LIST">DIGITOVER</field>
+      <block type="controls_if" id="chk_parity">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="math_number_property" id="chk_even">
+            <mutation divisor_input="false"></mutation>
+            <field name="PROPERTY">EVEN</field>
+            <value name="NUMBER_TO_CHECK">
+              <block type="last_digit" id="g_digit"></block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="purchase" id="buy_even">
+            <field name="PURCHASE_LIST">DIGITEVEN</field>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="purchase" id="buy_odd">
+            <field name="PURCHASE_LIST">DIGITODD</field>
+          </block>
+        </statement>
       </block>
     </statement>
   </block>
@@ -190,7 +193,7 @@
                 <field name="NOTIFICATION_SOUND">earned-money</field>
                 <value name="MESSAGE">
                   <block type="text" id="t_w">
-                    <field name="TEXT">Elisy254 OVER WIN!</field>
+                    <field name="TEXT">Elisy254 EVEN/ODD WIN!</field>
                   </block>
                 </value>
                 <next>
@@ -211,7 +214,7 @@
                 <field name="NOTIFICATION_SOUND">severe-error</field>
                 <value name="MESSAGE">
                   <block type="text" id="t_l">
-                    <field name="TEXT">Elisy254 LOSS! Recovering stake...</field>
+                    <field name="TEXT">Elisy254 LOSS! Recovering 2.1x...</field>
                   </block>
                 </value>
                 <next>
@@ -260,7 +263,7 @@
                     <field name="NOTIFICATION_SOUND">job-done</field>
                     <value name="MESSAGE">
                       <block type="text" id="t_tp">
-                        <field name="TEXT">ELISY254 TARGET PROFIT HIT!</field>
+                        <field name="TEXT">Elisy254 2026 TARGET PROFIT HIT!</field>
                       </block>
                     </value>
                   </block>
@@ -291,13 +294,13 @@
                     <field name="NOTIFICATION_SOUND">severe-error</field>
                     <value name="MESSAGE">
                       <block type="text" id="t_sl">
-                        <field name="TEXT">ELISY254 STOP LOSS HIT!</field>
+                        <field name="TEXT">Elisy254 2026 STOP LOSS HIT!</field>
                       </block>
                     </value>
                   </block>
                 </statement>
                 <statement name="ELSE">
-                  <block type="trade_again" id="trd_ag3"></block>
+                  <block type="trade_again" id="trd_ag2"></block>
                 </statement>
               </block>
             </next>
