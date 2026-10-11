@@ -1,4 +1,3 @@
-
 <xml xmlns="https://developers.google.com/blockly/xml" collection="false">
   <variables>
     <variable id="Stake">Stake</variable>
@@ -43,11 +42,6 @@
     </statement>
 
     <statement name="INITIALIZATION">
-      <block type="notify" id="start_notify">
-        <field name="NOTIFICATION_TYPE">info</field>
-        <field name="NOTIFICATION_SOUND">announcement</field>
-        <value name="MESSAGE"><block type="text" id="start_text"><field name="TEXT">ELISY254 START</field></block></value>
-        <next>
       <block type="variables_set" id="set_initial">
         <field name="VAR" id="Stake">Stake</field>
         <value name="VALUE">
@@ -86,8 +80,6 @@
           </block>
         </next>
       </block>
-        </next>
-      </block>
     </statement>
 
     <statement name="SUBMARKET">
@@ -121,8 +113,19 @@
 
   <block type="before_purchase" id="before_purchase" x="520" y="0">
     <statement name="BEFOREPURCHASE_STACK">
-      <block type="purchase" id="buy_match">
-        <field name="PURCHASE_LIST">DIGITMATCH</field>
+      <block type="notify" id="notify_before">
+        <field name="NOTIFICATION_TYPE">info</field>
+        <field name="NOTIFICATION_SOUND">silent</field>
+        <value name="MESSAGE">
+          <shadow type="text" id="msg_before_txt">
+            <field name="TEXT">ELISY254👹 HIT TARGET OR STOP OR START</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="purchase" id="buy_match">
+            <field name="PURCHASE_LIST">DIGITMATCH</field>
+          </block>
+        </next>
       </block>
     </statement>
   </block>
@@ -137,28 +140,27 @@
           </block>
         </value>
         <statement name="DO0">
-          <block type="notify" id="win_notify">
+          <block type="notify" id="notify_hit_target">
             <field name="NOTIFICATION_TYPE">success</field>
-            <field name="NOTIFICATION_SOUND">earned-money</field>
-            <value name="MESSAGE"><block type="text" id="win_text"><field name="TEXT">ELISY254 WIN!</field></block></value>
-            <next>
-          <block type="variables_set" id="reset_stake">
-            <field name="VAR" id="Stake">Stake</field>
-            <value name="VALUE">
-              <block type="variables_get">
-                <field name="VAR" id="InitialStake">Initial Stake</field>
-              </block>
+            <field name="NOTIFICATION_SOUND">silent</field>
+            <value name="MESSAGE">
+              <shadow type="text" id="msg_win_txt">
+                <field name="TEXT">ELISY254👹 HIT TARGET OR STOP OR START</field>
+              </shadow>
             </value>
-          </block>
+            <next>
+              <block type="variables_set" id="reset_stake">
+                <field name="VAR" id="Stake">Stake</field>
+                <value name="VALUE">
+                  <block type="variables_get">
+                    <field name="VAR" id="InitialStake">Initial Stake</field>
+                  </block>
+                </value>
+              </block>
             </next>
           </block>
         </statement>
         <statement name="ELSE">
-          <block type="notify" id="loss_notify">
-            <field name="NOTIFICATION_TYPE">error</field>
-            <field name="NOTIFICATION_SOUND">severe-error</field>
-            <value name="MESSAGE"><block type="text" id="loss_text"><field name="TEXT">ELISY254 LOSS!</field></block></value>
-            <next>
           <block type="variables_set" id="increase_stake">
             <field name="VAR" id="Stake">Stake</field>
             <value name="VALUE">
@@ -176,8 +178,6 @@
                 </value>
               </block>
             </value>
-          </block>
-            </next>
           </block>
         </statement>
         <next>
