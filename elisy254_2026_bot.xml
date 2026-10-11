@@ -1,4 +1,4 @@
-<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+<xml xmlns="https://developers.google.com/blockly/xml" collection="false">
   <variables>
     <variable type="" id="Stake">Stake</variable>
     <variable type="" id="InitialStake">Initial Stake</variable>
@@ -26,7 +26,7 @@
                   <block type="trade_definition_candleinterval" id="interval_def">
                     <field name="CANDLEINTERVAL_LIST">60</field>
                     <next>
-                      <block type="trade_definition_restartbuystat" id="restart_def">
+                      <block type="trade_definition_restartbuysell" id="restart_def">
                         <field name="TIME_MACHINE_ENABLED">FALSE</field>
                         <next>
                           <block type="trade_definition_restartonerror" id="onerror_def">
