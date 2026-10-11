@@ -8,7 +8,6 @@
     <variable type="" id="TotalProfit">Total Profit</variable>
   </variables>
 
-  <!-- BLOCK 1: BOT SETUP & PARAMETERS -->
   <block type="trade_definition" id="trade_def" x="0" y="0">
     <statement name="TRADE_OPTIONS">
       <block type="trade_definition_market" id="market_def">
@@ -43,8 +42,8 @@
         </next>
       </block>
     </statement>
+
     <statement name="INITIALIZATION">
-      <!-- Welcome Sound & Start Notification -->
       <block type="notify" id="start_notify">
         <field name="NOTIFICATION_TYPE">info</field>
         <field name="NOTIFICATION_SOUND">announcement</field>
@@ -115,6 +114,7 @@
         </next>
       </block>
     </statement>
+
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="options_def">
         <mutation has_first_barrier="false" has_second_barrier="false"></mutation>
@@ -133,7 +133,6 @@
     </statement>
   </block>
 
-  <!-- BLOCK 2: ENTRY SIGNAL EVALUATION -->
   <block type="before_purchase" id="before_purchase_def" x="520" y="0">
     <statement name="BEFOREPURCHASE_STACK">
       <block type="controls_if" id="check_digit_parity">
@@ -161,10 +160,8 @@
     </statement>
   </block>
 
-  <!-- BLOCK 3: AFTER PURCHASE (SOUNDS, MARTINGALE & PROFIT CHECKS) -->
   <block type="after_purchase" id="after_purchase_def" x="520" y="320">
     <statement name="AFTERPURCHASE_STACK">
-      <!-- Track Profit -->
       <block type="variables_set" id="update_profit">
         <field name="VAR" id="TotalProfit">Total Profit</field>
         <value name="VALUE">
@@ -190,8 +187,6 @@
                 <field name="CHECK_RESULT">win</field>
               </block>
             </value>
-
-            <!-- ON WIN: PLAY WIN SOUND & RESET STAKE -->
             <statement name="DO0">
               <block type="notify" id="notify_win">
                 <field name="NOTIFICATION_TYPE">success</field>
@@ -223,8 +218,6 @@
                 </next>
               </block>
             </statement>
-
-            <!-- ON LOSS: PLAY LOSS SOUND & APPLY MULTIPLIER -->
             <statement name="ELSE">
               <block type="notify" id="notify_loss">
                 <field name="NOTIFICATION_TYPE">error</field>
@@ -266,13 +259,9 @@
                 </next>
               </block>
             </statement>
-
             <next>
-              <!-- TARGET PROFIT & STOP LOSS CHECKS -->
               <block type="controls_if" id="check_tp_sl">
                 <mutation elseif="1" else="1"></mutation>
-                
-                <!-- CHECK TARGET PROFIT REACHED -->
                 <value name="IF0">
                   <block type="logic_compare" id="cmp_tp">
                     <field name="OP">GTE</field>
@@ -309,8 +298,6 @@
                     </value>
                   </block>
                 </statement>
-
-                <!-- CHECK STOP LOSS REACHED -->
                 <value name="IF1">
                   <block type="logic_compare" id="cmp_sl">
                     <field name="OP">LTE</field>
@@ -352,12 +339,9 @@
                     </value>
                   </block>
                 </statement>
-
-                <!-- CONTINUE TRADING -->
                 <statement name="ELSE">
                   <block type="trade_again" id="action_trade_again"></block>
                 </statement>
-
               </block>
             </next>
           </block>
