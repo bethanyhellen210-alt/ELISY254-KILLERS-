@@ -43,6 +43,11 @@
     </statement>
 
     <statement name="INITIALIZATION">
+      <block type="notify" id="start_notify">
+        <field name="NOTIFICATION_TYPE">info</field>
+        <field name="NOTIFICATION_SOUND">announcement</field>
+        <value name="MESSAGE"><block type="text" id="start_text"><field name="TEXT">ELISY254 START</field></block></value>
+        <next>
       <block type="variables_set" id="set_initial">
         <field name="VAR" id="Stake">Stake</field>
         <value name="VALUE">
@@ -79,6 +84,8 @@
               </block>
             </next>
           </block>
+        </next>
+      </block>
         </next>
       </block>
     </statement>
@@ -130,6 +137,11 @@
           </block>
         </value>
         <statement name="DO0">
+          <block type="notify" id="win_notify">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <field name="NOTIFICATION_SOUND">earned-money</field>
+            <value name="MESSAGE"><block type="text" id="win_text"><field name="TEXT">ELISY254 WIN!</field></block></value>
+            <next>
           <block type="variables_set" id="reset_stake">
             <field name="VAR" id="Stake">Stake</field>
             <value name="VALUE">
@@ -138,8 +150,15 @@
               </block>
             </value>
           </block>
+            </next>
+          </block>
         </statement>
         <statement name="ELSE">
+          <block type="notify" id="loss_notify">
+            <field name="NOTIFICATION_TYPE">error</field>
+            <field name="NOTIFICATION_SOUND">severe-error</field>
+            <value name="MESSAGE"><block type="text" id="loss_text"><field name="TEXT">ELISY254 LOSS!</field></block></value>
+            <next>
           <block type="variables_set" id="increase_stake">
             <field name="VAR" id="Stake">Stake</field>
             <value name="VALUE">
@@ -157,6 +176,8 @@
                 </value>
               </block>
             </value>
+          </block>
+            </next>
           </block>
         </statement>
         <next>
