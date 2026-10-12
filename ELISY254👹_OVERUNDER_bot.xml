@@ -1,3 +1,4 @@
+
 <xml xmlns="https://developers.google.com/blockly/xml" collection="false">
   <variables>
     <variable id="Stake">Stake</variable>
@@ -42,15 +43,15 @@
         <field name="NOTIFICATION_TYPE">info</field>
         <field name="NOTIFICATION_SOUND">announcement</field>
         <value name="MESSAGE">
-          <block type="text" id="start_text">
-            <field name="TEXT">ELISY254 OVER/UNDER START</field>
+          <block type="text">
+            <field name="TEXT">ELISY254 OVER/UNDER BOT STARTED</field>
           </block>
         </value>
         <next>
           <block type="variables_set" id="stake_init">
             <field name="VAR" id="Stake">Stake</field>
             <value name="VALUE">
-              <block type="math_number" id="stake_num">
+              <block type="math_number">
                 <field name="NUM">1</field>
               </block>
             </value>
@@ -58,7 +59,7 @@
               <block type="variables_set" id="initial_init">
                 <field name="VAR" id="InitialStake">Initial Stake</field>
                 <value name="VALUE">
-                  <block type="variables_get" id="initial_stake_value">
+                  <block type="variables_get">
                     <field name="VAR" id="Stake">Stake</field>
                   </block>
                 </value>
@@ -66,7 +67,7 @@
                   <block type="variables_set" id="profit_init">
                     <field name="VAR" id="TotalProfit">Total Profit</field>
                     <value name="VALUE">
-                      <block type="math_number" id="profit_num">
+                      <block type="math_number">
                         <field name="NUM">0</field>
                       </block>
                     </value>
@@ -74,7 +75,7 @@
                       <block type="variables_set" id="target_init">
                         <field name="VAR" id="TargetProfit">Target Profit</field>
                         <value name="VALUE">
-                          <block type="math_number" id="target_num">
+                          <block type="math_number">
                             <field name="NUM">10</field>
                           </block>
                         </value>
@@ -82,7 +83,7 @@
                           <block type="variables_set" id="stop_init">
                             <field name="VAR" id="StopLoss">Stop Loss</field>
                             <value name="VALUE">
-                              <block type="math_number" id="stop_num">
+                              <block type="math_number">
                                 <field name="NUM">50</field>
                               </block>
                             </value>
@@ -104,17 +105,17 @@
         <mutation has_first_barrier="true" has_second_barrier="false"></mutation>
         <field name="DURATIONTYPE_LIST">t</field>
         <value name="DURATION">
-          <block type="math_number" id="duration_num">
+          <block type="math_number">
             <field name="NUM">1</field>
           </block>
         </value>
         <value name="AMOUNT">
-          <block type="variables_get" id="stake_get">
+          <block type="variables_get">
             <field name="VAR" id="Stake">Stake</field>
           </block>
         </value>
         <value name="BARRIER">
-          <block type="math_number" id="barrier_num">
+          <block type="math_number">
             <field name="NUM">5</field>
           </block>
         </value>
@@ -127,13 +128,13 @@
       <block type="controls_if" id="automatic_over_under">
         <mutation elseif="1" else="0"></mutation>
         <value name="IF0">
-          <block type="logic_compare" id="under_condition">
+          <block type="logic_compare">
             <field name="OP">LT</field>
             <value name="A">
-              <block type="last_digit" id="digit_for_under"></block>
+              <block type="last_digit"></block>
             </value>
             <value name="B">
-              <block type="math_number" id="under_barrier_check">
+              <block type="math_number">
                 <field name="NUM">5</field>
               </block>
             </value>
@@ -145,13 +146,13 @@
           </block>
         </statement>
         <value name="IF1">
-          <block type="logic_compare" id="over_condition">
+          <block type="logic_compare">
             <field name="OP">GT</field>
             <value name="A">
-              <block type="last_digit" id="digit_for_over"></block>
+              <block type="last_digit"></block>
             </value>
             <value name="B">
-              <block type="math_number" id="over_barrier_check">
+              <block type="math_number">
                 <field name="NUM">5</field>
               </block>
             </value>
@@ -171,15 +172,15 @@
       <block type="variables_set" id="profit_update">
         <field name="VAR" id="TotalProfit">Total Profit</field>
         <value name="VALUE">
-          <block type="math_arithmetic" id="profit_add">
+          <block type="math_arithmetic">
             <field name="OP">ADD</field>
             <value name="A">
-              <block type="variables_get" id="profit_get">
+              <block type="variables_get">
                 <field name="VAR" id="TotalProfit">Total Profit</field>
               </block>
             </value>
             <value name="B">
-              <block type="read_details" id="read_profit">
+              <block type="read_details">
                 <field name="DETAIL_INDEX">4</field>
               </block>
             </value>
@@ -189,24 +190,24 @@
           <block type="controls_if" id="result_check">
             <mutation else="1"></mutation>
             <value name="IF0">
-              <block type="contract_check_result" id="win_check">
+              <block type="contract_check_result">
                 <field name="CHECK_RESULT">win</field>
               </block>
             </value>
             <statement name="DO0">
-              <block type="notify" id="win_notify">
+              <block type="notify">
                 <field name="NOTIFICATION_TYPE">success</field>
                 <field name="NOTIFICATION_SOUND">earned-money</field>
                 <value name="MESSAGE">
-                  <block type="text" id="win_text">
+                  <block type="text">
                     <field name="TEXT">ELISY254 WIN! Stake reset.</field>
                   </block>
                 </value>
                 <next>
-                  <block type="variables_set" id="reset_stake">
+                  <block type="variables_set">
                     <field name="VAR" id="Stake">Stake</field>
                     <value name="VALUE">
-                      <block type="variables_get" id="initial_get">
+                      <block type="variables_get">
                         <field name="VAR" id="InitialStake">Initial Stake</field>
                       </block>
                     </value>
@@ -215,11 +216,11 @@
               </block>
             </statement>
             <statement name="ELSE">
-              <block type="notify" id="loss_notify">
+              <block type="notify">
                 <field name="NOTIFICATION_TYPE">error</field>
                 <field name="NOTIFICATION_SOUND">severe-error</field>
                 <value name="MESSAGE">
-                  <block type="text" id="loss_text">
+                  <block type="text">
                     <field name="TEXT">ELISY254 LOSS</field>
                   </block>
                 </value>
@@ -229,44 +230,44 @@
               <block type="controls_if" id="limits_check">
                 <mutation elseif="1" else="1"></mutation>
                 <value name="IF0">
-                  <block type="logic_compare" id="target_compare">
+                  <block type="logic_compare">
                     <field name="OP">GTE</field>
                     <value name="A">
-                      <block type="variables_get" id="profit_target_get">
+                      <block type="variables_get">
                         <field name="VAR" id="TotalProfit">Total Profit</field>
                       </block>
                     </value>
                     <value name="B">
-                      <block type="variables_get" id="target_get">
+                      <block type="variables_get">
                         <field name="VAR" id="TargetProfit">Target Profit</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <statement name="DO0">
-                  <block type="notify" id="target_notify">
+                  <block type="notify">
                     <field name="NOTIFICATION_TYPE">success</field>
                     <field name="NOTIFICATION_SOUND">job-done</field>
                     <value name="MESSAGE">
-                      <block type="text" id="target_text">
+                      <block type="text">
                         <field name="TEXT">ELISY254 TARGET HIT!</field>
                       </block>
                     </value>
                   </block>
                 </statement>
                 <value name="IF1">
-                  <block type="logic_compare" id="stop_compare">
+                  <block type="logic_compare">
                     <field name="OP">LTE</field>
                     <value name="A">
-                      <block type="variables_get" id="profit_stop_get">
+                      <block type="variables_get">
                         <field name="VAR" id="TotalProfit">Total Profit</field>
                       </block>
                     </value>
                     <value name="B">
-                      <block type="math_single" id="negative_stop">
+                      <block type="math_single">
                         <field name="OP">NEG</field>
                         <value name="NUM">
-                          <block type="variables_get" id="stop_get">
+                          <block type="variables_get">
                             <field name="VAR" id="StopLoss">Stop Loss</field>
                           </block>
                         </value>
@@ -275,18 +276,18 @@
                   </block>
                 </value>
                 <statement name="DO1">
-                  <block type="notify" id="stop_notify">
+                  <block type="notify">
                     <field name="NOTIFICATION_TYPE">error</field>
                     <field name="NOTIFICATION_SOUND">severe-error</field>
                     <value name="MESSAGE">
-                      <block type="text" id="stop_text">
+                      <block type="text">
                         <field name="TEXT">ELISY254 STOP LOSS HIT!</field>
                       </block>
                     </value>
                   </block>
                 </statement>
                 <statement name="ELSE">
-                  <block type="trade_again" id="trade_again_block"></block>
+                  <block type="trade_again"></block>
                 </statement>
               </block>
             </next>
