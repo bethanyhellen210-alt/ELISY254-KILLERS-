@@ -1,0 +1,47 @@
+
+<xml xmlns="https://developers.google.com/blockly/xml" collection="false">
+  <variables>
+    <variable id="Stake">Stake</variable>
+    <variable id="InitialStake">Initial Stake</variable>
+    <variable id="TotalProfit">Total Profit</variable>
+    <variable id="TargetProfit">Target Profit</variable>
+    <variable id="StopLoss">Stop Loss</variable>
+    <variable id="BulkCount">Bulk Count</variable>
+    <variable id="TradesCompleted">Trades Completed</variable>
+    <variable id="EntryDigit">Entry Digit</variable>
+    <variable id="LockedSignal">Locked Signal</variable>
+  </variables>
+  <block type="trade_definition" id="elisy254_trade" deletable="false" x="20" y="20">
+    <mutation>
+      <statement name="TRADE_OPTIONS">
+        <block type="trade_definition_market" id="elisy254_market">
+          <field name="MARKET_LIST">synthetic_index</field>
+          <field name="SUBMARKET_LIST">random_index</field>
+          <field name="SYMBOL_LIST">1HZ10V</field>
+          <next>
+            <block type="trade_definition_tradetype" id="elisy254_type">
+              <field name="TRADETYPECAT_LIST">digits</field>
+              <field name="TRADETYPE_LIST">overunder</field>
+              <field name="TYPE_LIST">both</field>
+              <next>
+                <block type="trade_definition_contracttype" id="elisy254_contract">
+                  <field name="TYPE_LIST">both</field>
+                  <next>
+                    <block type="trade_definition_restartbuysell" id="elisy254_restart">
+                      <field name="TIME_MACHINE_ENABLED">FALSE</field>
+                      <next>
+                        <block type="trade_definition_restartonerror" id="elisy254_restart_error">
+                          <field name="RESTARTONERROR">FALSE</field>
+                        </block>
+                      </next>
+                    </block>
+                  </next>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </statement>
+    </mutation>
+  </block>
+</xml>
